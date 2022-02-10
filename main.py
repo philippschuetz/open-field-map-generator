@@ -11,7 +11,7 @@ if "-h" in argv or "--help" in argv:
     print("Usage: main.py [-h] [FILE]")
     quit()
 
-if argv[1]:
+if len(argv) > 1:
     used_workbook = argv[1]
 else:
     # user input
