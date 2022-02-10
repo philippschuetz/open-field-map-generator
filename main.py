@@ -12,13 +12,13 @@ used_workbook = 'data.xlsx'
 used_sheet = 'data'
 used_column = 'A'
 row_count = 60
-border_config = 1
+border_config = 0
 
-# used_workbook = input("name of the excel table: ")
-# used_sheet = input("name of the sheet to use: ")
-# used_column = input("used column letter: ")
-# row_count = input("number of used rows: ")
-# border_config = input("used border type (inner(0), outer(1), none(3)): ")
+used_workbook = input("name of the excel table: ")
+used_sheet = input("name of the sheet to use: ")
+used_column = input("used column letter: ")
+row_count = input("number of used rows: ")
+border_config = input("used border type (inner(0), outer(1), none(3)): ")
 
 
 excel_data_list = []
@@ -80,15 +80,15 @@ if int(border_config) == 0:
     # delete four middle fields
     d.rectangle([(192, 192), (320, 320)], (0, 0, 0))
     # draw lines
-    d.line([(192, 192), (320, 192)], (106, 153, 85), 4)
-    d.line([(320, 192), (320, 320)], (106, 153, 85), 4)
-    d.line([(320, 320), (192, 320)], (106, 153, 85), 4)
-    d.line([(192, 320), (192, 192)], (106, 153, 85), 4)
+    d.line([(192, 192), (320, 192)], (106, 153, 85), 8)
+    d.line([(320, 192), (320, 320)], (106, 153, 85), 8)
+    d.line([(320, 320), (192, 320)], (106, 153, 85), 8)
+    d.line([(192, 320), (192, 192)], (106, 153, 85), 8)
 
 if int(border_config) == 1:
-    d.line([(0, 0), (512, 0)], (106, 153, 85), 4)
-    d.line([(512, 0), (512, 512)], (106, 153, 85), 4)
-    d.line([(512, 512), (0, 512)], (106, 153, 85), 4)
-    d.line([(0, 512), (0, 0)], (106, 153, 85), 4)
+    d.line([(0, 0), (512, 0)], (106, 153, 85), 8)
+    d.line([(512, 0), (512, 512)], (106, 153, 85), 8)
+    d.line([(512, 512), (0, 512)], (106, 153, 85), 8)
+    d.line([(0, 512), (0, 0)], (106, 153, 85), 8)
 
 out.show()
