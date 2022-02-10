@@ -12,13 +12,13 @@ used_workbook = 'data.xlsx'
 used_sheet = 'data'
 used_column = 'A'
 row_count = 60
-border_config = 0
+border_config = 1
 
-used_workbook = input("name of the excel table: ")
-used_sheet = input("name of the sheet to use: ")
-used_column = input("used column letter: ")
-row_count = input("number of used rows: ")
-border_config = input("used border type (inner(0), outer(1), none(3)): ")
+# used_workbook = input("name of the excel table: ")
+# used_sheet = input("name of the sheet to use: ")
+# used_column = input("used column letter: ")
+# row_count = input("number of used rows: ")
+# border_config = input("used border type (inner(0), outer(1), none(3)): ")
 
 
 excel_data_list = []
@@ -47,21 +47,14 @@ for i in frequency_list:
 
 
 # background creation
-out = Image.new("RGB", (520, 520), (0, 0, 0))
+out = Image.new("RGB", (512, 512), (0, 0, 0))
 d = ImageDraw.Draw(out)
 
-# green lines
-# i = 65
-# while i < 519:
-#     d.line([(0, i), (519, i)], (106, 153, 85), 1)
-#     d.line([(i, 0), (i, 519)], (106, 153, 85), 1)
-#     i += 65
-
 i = 0
-x1 = 4
-y1 = 4
-x2 = 68
-y2 = 68
+x1 = 0
+y1 = 0
+x2 = 64
+y2 = 64
 
 for i in range(0, len(frequency_list_p)):
     if frequency_list_p[i] > 0.5:
@@ -71,13 +64,13 @@ for i in range(0, len(frequency_list_p)):
     color = int(frequency_list_p[i] * 255)
 
     if i in [8, 16, 24, 32, 40, 48, 56]:
-        x1 = 4
+        x1 = 0
         y1 += 64
         x2 = 64
         y2 += 64
         
     d.rectangle([(x1, y1), (x2, y2)], (color, color, color))
-    d.text((x1 + 5, y1 + 5), str(i+1), fill=(text_color, text_color, text_color))
+    d.text((x1 + 10, y1 + 10), str(i+1), fill=(text_color, text_color, text_color))
     x1 += 64
     x2 += 64
     i += 1
@@ -85,17 +78,17 @@ for i in range(0, len(frequency_list_p)):
 # draw borders
 if int(border_config) == 0:
     # delete four middle fields
-    d.rectangle([(196, 196), (324, 324)], (0, 0, 0))
+    d.rectangle([(192, 192), (320, 320)], (0, 0, 0))
     # draw lines
-    d.line([(196, 196), (324, 196)], (106, 153, 85), 4)
-    d.line([(324, 196), (324, 324)], (106, 153, 85), 4)
-    d.line([(324, 324), (196, 324)], (106, 153, 85), 4)
-    d.line([(196, 324), (196, 196)], (106, 153, 85), 4)
+    d.line([(192, 192), (320, 192)], (106, 153, 85), 4)
+    d.line([(320, 192), (320, 320)], (106, 153, 85), 4)
+    d.line([(320, 320), (192, 320)], (106, 153, 85), 4)
+    d.line([(192, 320), (192, 192)], (106, 153, 85), 4)
 
 if int(border_config) == 1:
-    d.line([(0, 0), (520, 0)], (106, 153, 85), 4)
-    d.line([(520, 0), (520, 520)], (106, 153, 85), 4)
-    d.line([(520, 520), (0, 520)], (106, 153, 85), 4)
-    d.line([(0, 520), (0, 0)], (106, 153, 85), 4)
+    d.line([(0, 0), (512, 0)], (106, 153, 85), 4)
+    d.line([(512, 0), (512, 512)], (106, 153, 85), 4)
+    d.line([(512, 512), (0, 512)], (106, 153, 85), 4)
+    d.line([(0, 512), (0, 0)], (106, 153, 85), 4)
 
 out.show()
