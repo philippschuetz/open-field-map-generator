@@ -41,7 +41,7 @@ if used_workbook.endswith(".xlsx"):
     wb = load_workbook(used_workbook)
     sheet = wb[used_sheet]
 
-    for i in range(1, len(raw_data_list)):
+    for i in range(1, int(row_count)):
         cell = str(used_column) + str(i)
         raw_data_list.append(sheet[cell].value)
 
@@ -79,7 +79,7 @@ frequency_list_p = []
 
 # get percentage for each value
 for i in frequency_list:
-    i = i / max(frequency_dict)
+    i = i / max(frequency_list)
     frequency_list_p.append(i)
 
 # background creation
