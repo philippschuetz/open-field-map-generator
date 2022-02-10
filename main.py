@@ -5,7 +5,6 @@ from typing import Counter
 from attr import field
 from openpyxl import Workbook, load_workbook
 from collections import Counter
-import sys
 from PIL import Image, ImageDraw, ImageFont
 
 # user input
