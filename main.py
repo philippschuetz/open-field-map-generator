@@ -37,10 +37,6 @@ if used_workbook.endswith(".xlsx"):
     if row_count == "":
         row_count = 60
 
-    border_config = input("used border type (inner (default): 0, outer: 1, none: 3): ")
-    if border_config == "":
-        border_config = 0
-
     raw_data_list = []
     wb = load_workbook(used_workbook)
     sheet = wb[used_sheet]
@@ -63,6 +59,11 @@ else:
         raw_data_list = []
         for line in csv_in.readlines():
             raw_data_list.append(int(line))
+
+# get border design
+border_config = input("used border type (inner (default): 0, outer: 1, none: 3): ")
+if border_config == "":
+    border_config = 0
 
 # calculate frequencies of values in raw_data_list
 frequency_dict = Counter(raw_data_list)
@@ -106,7 +107,7 @@ for i in range(0, len(frequency_list_p)):
         x2 = 64
         y2 += 64
 
-    d.rectangle([(x1, y1), (x2, y2)], (color, color, color))
+    d.rectangle(((x1, y1), (x2, y2)), (color, color, color))
     d.text((x1 + 10, y1 + 10), str(i + 1), fill=(text_color, text_color, text_color))
     x1 += 64
     x2 += 64
@@ -115,7 +116,7 @@ for i in range(0, len(frequency_list_p)):
 # draw borders
 if int(border_config) == 0:
     # delete four middle fields
-    d.rectangle([(192, 192), (320, 320)], (0, 0, 0))
+    d.rectangle(((192, 192), (320, 320)),(0, 0, 0))
     # draw lines
     d.line([(192, 192), (320, 192)], (106, 153, 85), 8)
     d.line([(320, 192), (320, 320)], (106, 153, 85), 8)
