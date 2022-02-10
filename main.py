@@ -1,15 +1,23 @@
-import json
+#!/bin/env python
 from csv import excel
 from email.utils import collapse_rfc2231_value
 from multiprocessing.sharedctypes import Value
 from attr import field
 from collections import Counter
 from PIL import Image, ImageDraw, ImageFont
+from sys import argv
 
-# user input
-used_workbook = input("name of the file (data.xlsx): ")
-if used_workbook == "":
-    used_workbook = 'data.xlsx'
+if "-h" in argv or "--help" in argv:
+    print("Usage: main.py [-h] [FILE]")
+    quit()
+
+if argv[1]:
+    used_workbook = argv[1]
+else:
+    # user input
+    used_workbook = input("name of the file (data.xlsx): ")
+    if used_workbook == "":
+        used_workbook = 'data.xlsx'
 
 if used_workbook.endswith(".xlsx"):
     # parsing exel file
@@ -41,9 +49,10 @@ if used_workbook.endswith(".xlsx"):
 
 elif used_workbook.endswith(".json"):
     # parsing json file
+    from json import load
 
     with open(used_workbook, 'r') as json_in:
-        raw_data_list = json.load(json_in)
+        raw_data_list = load(json_in)
 
 else:
     print("assuming the data is in a csv format")
@@ -68,7 +77,6 @@ for i in frequency_list:
     i = i / max(frequency_dict)
     frequency_list_p.append(i)
 
-
 # background creation
 out = Image.new("RGB", (512, 512), (0, 0, 0))
 d = ImageDraw.Draw(out)
@@ -91,9 +99,9 @@ for i in range(0, len(frequency_list_p)):
         y1 += 64
         x2 = 64
         y2 += 64
-        
+
     d.rectangle([(x1, y1), (x2, y2)], (color, color, color))
-    d.text((x1 + 10, y1 + 10), str(i+1), fill=(text_color, text_color, text_color))
+    d.text((x1 + 10, y1 + 10), str(i + 1), fill=(text_color, text_color, text_color))
     x1 += 64
     x2 += 64
     i += 1
