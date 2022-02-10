@@ -19,7 +19,7 @@ if len(argv) > 1:
 else:
     used_workbook = input("name of the file (data.xlsx): ")
     if used_workbook == "":
-        used_workbook = 'data.xlsx'
+        used_workbook = 'example.csv'
 
 # parsing exel file
 if used_workbook.endswith(".xlsx"):
@@ -54,7 +54,8 @@ elif used_workbook.endswith(".json"):
 
 # default to csv format
 else:
-    print("assuming the data is in a csv format")
+    if not used_workbook.endswith(".csv"):
+        print("assuming the data is in a csv format")
     with open(used_workbook, 'r') as csv_in:
         raw_data_list = []
         for line in csv_in.readlines():
