@@ -7,20 +7,22 @@ from collections import Counter
 from PIL import Image, ImageDraw, ImageFont
 from sys import argv
 
+# print help and exit if help argument was given
 if "-h" in argv or "--help" in argv:
     print("Usage: main.py [-h] [FILE]")
     quit()
 
+# use command line argument 1 as file name if given
 if len(argv) > 1:
     used_workbook = argv[1]
+# else use user input
 else:
-    # user input
     used_workbook = input("name of the file (data.xlsx): ")
     if used_workbook == "":
         used_workbook = 'data.xlsx'
 
+# parsing exel file
 if used_workbook.endswith(".xlsx"):
-    # parsing exel file
     from openpyxl import Workbook, load_workbook
 
     used_sheet = input("name of the sheet to use (data): ")
@@ -47,13 +49,14 @@ if used_workbook.endswith(".xlsx"):
         cell = str(used_column) + str(i)
         raw_data_list.append(sheet[cell].value)
 
+# parsing json file
 elif used_workbook.endswith(".json"):
-    # parsing json file
     from json import load
 
     with open(used_workbook, 'r') as json_in:
         raw_data_list = load(json_in)
 
+# default to csv format
 else:
     print("assuming the data is in a csv format")
     with open(used_workbook, 'r') as csv_in:
@@ -61,6 +64,7 @@ else:
         for line in csv_in.readlines():
             raw_data_list.append(int(line))
 
+# calculate frequencies of values in raw_data_list
 frequency_dict = Counter(raw_data_list)
 frequency_list = []
 
@@ -88,10 +92,12 @@ x2 = 64
 y2 = 64
 
 for i in range(0, len(frequency_list_p)):
+    # change text color depending on brightness of tile
     if frequency_list_p[i] > 0.5:
         text_color = 0
     else:
         text_color = 255
+    # base brightness of tile on calculated value
     color = int(frequency_list_p[i] * 255)
 
     if i in [8, 16, 24, 32, 40, 48, 56]:
