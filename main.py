@@ -7,18 +7,24 @@ from collections import Counter
 from PIL import Image, ImageDraw, ImageFont
 
 # user input
-used_workbook = 'data.xlsx'
-used_sheet = 'data'
-used_column = 'A'
-row_count = 60
-border_config = 0
+used_workbook = input("name of the excel table (data.xlsx): ")
+if used_workbook == "":
+    used_workbook = 'data.xlsx'
 
-used_workbook = input("name of the excel table: ")
-used_sheet = input("name of the sheet to use: ")
-used_column = input("used column letter: ")
-row_count = input("number of used rows: ")
-border_config = input("used border type (inner(0), outer(1), none(3)): ")
+used_sheet = input("name of the sheet to use (data): ")
+if used_sheet == "":
+    used_sheet = 'data'
 
+used_column = input("used column letter (A): ")
+if used_column == "":
+    used_column = 'A'
+
+row_count = input("number of used rows (60): ")
+if row_count == "":
+    row_count = 60
+border_config = input("used border type (inner (default): 0, outer: 1, none: 3): ")
+if border_config == "":
+    border_config = 0
 
 excel_data_list = []
 wb = load_workbook(used_workbook)
