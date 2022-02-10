@@ -1,40 +1,58 @@
+import json
 from csv import excel
 from email.utils import collapse_rfc2231_value
 from multiprocessing.sharedctypes import Value
 from attr import field
-from openpyxl import Workbook, load_workbook
 from collections import Counter
 from PIL import Image, ImageDraw, ImageFont
 
 # user input
-used_workbook = input("name of the excel table (data.xlsx): ")
+used_workbook = input("name of the file (data.xlsx): ")
 if used_workbook == "":
     used_workbook = 'data.xlsx'
 
-used_sheet = input("name of the sheet to use (data): ")
-if used_sheet == "":
-    used_sheet = 'data'
+if used_workbook.endswith(".xlsx"):
+    # parsing exel file
+    from openpyxl import Workbook, load_workbook
 
-used_column = input("used column letter (A): ")
-if used_column == "":
-    used_column = 'A'
+    used_sheet = input("name of the sheet to use (data): ")
+    if used_sheet == "":
+        used_sheet = 'data'
 
-row_count = input("number of used rows (60): ")
-if row_count == "":
-    row_count = 60
-border_config = input("used border type (inner (default): 0, outer: 1, none: 3): ")
-if border_config == "":
-    border_config = 0
+    used_column = input("used column letter (A): ")
+    if used_column == "":
+        used_column = 'A'
 
-excel_data_list = []
-wb = load_workbook(used_workbook)
-sheet = wb[used_sheet]
+    row_count = input("number of used rows (60): ")
+    if row_count == "":
+        row_count = 60
 
-for i in range(1, int(row_count)):
-    cell = str(used_column) + str(i)
-    excel_data_list.append(sheet[cell].value)
+    border_config = input("used border type (inner (default): 0, outer: 1, none: 3): ")
+    if border_config == "":
+        border_config = 0
 
-frequency_dict = Counter(excel_data_list)
+    raw_data_list = []
+    wb = load_workbook(used_workbook)
+    sheet = wb[used_sheet]
+
+    for i in range(1, len(raw_data_list)):
+        cell = str(used_column) + str(i)
+        raw_data_list.append(sheet[cell].value)
+
+elif used_workbook.endswith(".json"):
+    # parsing json file
+
+    with open(used_workbook, 'r') as json_in:
+        raw_data_list = json.load(json_in)
+
+else:
+    print("assuming the data is in a csv format")
+    with open(used_workbook, 'r') as csv_in:
+        raw_data_list = []
+        for line in csv_in.readlines():
+            raw_data_list.append(int(line))
+
+frequency_dict = Counter(raw_data_list)
 frequency_list = []
 
 for i in range(1, 65):
@@ -47,7 +65,7 @@ frequency_list_p = []
 
 # get percentage for each value
 for i in frequency_list:
-    i = i / row_count
+    i = i / max(frequency_dict)
     frequency_list_p.append(i)
 
 
