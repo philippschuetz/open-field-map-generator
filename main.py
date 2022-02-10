@@ -10,15 +10,22 @@ from PIL import Image, ImageDraw, ImageFont
 used_workbook = 'data.xlsx'
 used_sheet = 'data'
 used_column = 'A'
-row_count = 60
+row_count = 736
 border_config = 0
 
-used_workbook = input("name of the excel table: ")
-used_sheet = input("name of the sheet to use: ")
-used_column = input("used column letter: ")
-row_count = input("number of used rows: ")
-border_config = input("used border type (inner(0), outer(1), none(3)): ")
-
+used_workbook = input("name of the excel table or preset number: ")
+if ".xlsx" not in used_workbook:
+    if used_workbook == '1':
+        used_workbook = 'data.xlsx'
+        used_sheet = 'data'
+        used_column = 'A'
+        row_count = 60
+        border_config = 0
+else:
+    used_sheet = input("name of the sheet to use: ")
+    used_column = input("used column letter: ")
+    row_count = input("number of used rows: ")
+    border_config = input("used border type (inner(0), outer(1), none(3)): ")
 
 excel_data_list = []
 wb = load_workbook(used_workbook)
