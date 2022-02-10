@@ -1,7 +1,6 @@
 from csv import excel
 from email.utils import collapse_rfc2231_value
 from multiprocessing.sharedctypes import Value
-from typing import Counter
 from attr import field
 from openpyxl import Workbook, load_workbook
 from collections import Counter
@@ -25,7 +24,7 @@ excel_data_list = []
 wb = load_workbook(used_workbook)
 sheet = wb[used_sheet]
 
-for i in range(1, int(row_count) + 1):
+for i in range(1, int(row_count)):
     cell = str(used_column) + str(i)
     excel_data_list.append(sheet[cell].value)
 
@@ -42,7 +41,7 @@ frequency_list_p = []
 
 # get percentage for each value
 for i in frequency_list:
-    i = i / 60
+    i = i / row_count
     frequency_list_p.append(i)
 
 
