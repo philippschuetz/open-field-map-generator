@@ -62,7 +62,7 @@ else:
             raw_data_list.append(int(line))
 
 # get border design
-border_config = input("used border type (inner (default): 0, outer: 1, none: 3): ")
+border_config = input("used border type (inner (default): 0, outer: 1, both: 2, none: 3): ")
 if border_config == "":
     border_config = 0
 
@@ -114,7 +114,7 @@ for i in range(0, len(frequency_list_p)):
     x2 += 64
     i += 1
 
-# draw borders
+# draw inner border
 if int(border_config) == 0:
     # delete four middle fields
     d.rectangle(((192, 192), (320, 320)),(0, 0, 0))
@@ -124,10 +124,26 @@ if int(border_config) == 0:
     d.line([(320, 320), (192, 320)], (106, 153, 85), 8)
     d.line([(192, 320), (192, 192)], (106, 153, 85), 8)
 
+# draw outer border
 if int(border_config) == 1:
     d.line([(0, 0), (512, 0)], (106, 153, 85), 8)
     d.line([(512, 0), (512, 512)], (106, 153, 85), 8)
     d.line([(512, 512), (0, 512)], (106, 153, 85), 8)
     d.line([(0, 512), (0, 0)], (106, 153, 85), 8)
+
+# draw both inner and outer border
+if int(border_config) == 2:
+    # draw outer border
+    d.line([(0, 0), (512, 0)], (106, 153, 85), 8)
+    d.line([(512, 0), (512, 512)], (106, 153, 85), 8)
+    d.line([(512, 512), (0, 512)], (106, 153, 85), 8)
+    d.line([(0, 512), (0, 0)], (106, 153, 85), 8)
+        # delete four middle fields
+    d.rectangle(((192, 192), (320, 320)),(0, 0, 0))
+    # draw inner border
+    d.line([(192, 192), (320, 192)], (106, 153, 85), 8)
+    d.line([(320, 192), (320, 320)], (106, 153, 85), 8)
+    d.line([(320, 320), (192, 320)], (106, 153, 85), 8)
+    d.line([(192, 320), (192, 192)], (106, 153, 85), 8)
 
 out.show()
