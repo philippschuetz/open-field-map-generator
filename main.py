@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/bin/env python3
 from csv import excel
 from email.utils import collapse_rfc2231_value
 from multiprocessing.sharedctypes import Value
@@ -14,6 +14,11 @@ border_config = used_column = used_sheet = row_count = ""
 # print help message
 def print_help():
     print("Usage: main.py [OPTIONS] [FILE]")
+    print("Generate analysation map for open-field-tests from data in .xlsx, .json or .csv file.\n")
+    print("-b, --border     border type, accepted values are 0, 1, 2, 3")
+    print("-s, --sheet      sheet from used .xlsx file")
+    print("-c, --column     column letter used in .xlsx file")
+    print("-r, --rows       number of rows used in .xlsx file")
     
 
 # extract command line options
