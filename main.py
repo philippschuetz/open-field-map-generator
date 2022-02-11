@@ -9,7 +9,7 @@ from sys import argv
 import getopt
 
 # define variables used in command line options
-border_config = ""
+border_config = used_column = used_sheet = row_count = ""
 
 # print help message
 def print_help():
@@ -18,7 +18,7 @@ def print_help():
 
 # extract command line options
 try:
-    args, opts = getopt.getopt(argv[1:], "hb:", ["help", "border="])
+    args, opts = getopt.getopt(argv[1:], "hb:s:c:r:", ["help", "border=", "sheet=", "column=", "rows="])
 except getopt.GetoptError:
     print_help()
     quit(2)
@@ -46,6 +46,12 @@ for arg, opt in args:
             if opt == "none":
                 border_config = 3
                 continue
+    if arg in ["-s", "--sheet"]:
+        used_sheet = opt
+    if arg in ["-c", "--column"]:
+        used_column = opt
+    if arg in ["-r", "--rows"]:
+        row_count = opt
         
 
 # use command line argument as file name if given
@@ -61,17 +67,20 @@ else:
 if used_workbook.endswith(".xlsx"):
     from openpyxl import Workbook, load_workbook
 
-    used_sheet = input("name of the sheet to use (data): ")
     if used_sheet == "":
-        used_sheet = 'data'
+        used_sheet = input("name of the sheet to use (data): ")
+        if used_sheet == "":
+            used_sheet = 'data'
 
-    used_column = input("used column letter (A): ")
     if used_column == "":
-        used_column = 'A'
+        used_column = input("used column letter (A): ")
+        if used_column == "":
+            used_column = 'A'
 
-    row_count = input("number of used rows (60): ")
     if row_count == "":
-        row_count = 60
+        row_count = input("number of used rows (60): ")
+        if row_count == "":
+            row_count = 60
 
     raw_data_list = []
     wb = load_workbook(used_workbook)
