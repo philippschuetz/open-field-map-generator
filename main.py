@@ -33,7 +33,7 @@ for arg, opt in args:
         try:
             border_config = int(opt)
             continue
-         except ValueError:
+        except ValueError:
             if opt == "inner":
                 border_config = 0
                 continue
@@ -98,7 +98,7 @@ else:
             raw_data_list.append(int(line))
 
 # get border design if not set by command line options
-if border_config == ""
+if border_config == "":
     border_config = input("used border type (inner (default): 0, outer: 1, both: 2, none: 3): ")
     if border_config == "":
         border_config = 0
