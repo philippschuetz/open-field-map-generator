@@ -83,20 +83,16 @@ else:
 if used_workbook.endswith(".xlsx"):
     from openpyxl import Workbook, load_workbook
 
-    if used_sheet == "":
-        used_sheet = input("name of the sheet to use (data): ")
-        if used_sheet == "":
-            used_sheet = 'data'
+    def input_promts(variable, input_phrase, default_value):
+        if variable == "":
+            variable = input(input_phrase)
+            if variable == "":
+                variable = default_value
+        return variable
 
-    if used_column == "":
-        used_column = input("used column letter (A): ")
-        if used_column == "":
-            used_column = 'A'
-
-    if row_count == "":
-        row_count = input("number of used rows (60): ")
-        if row_count == "":
-            row_count = 60
+    used_sheet = input_promts(used_sheet, "name of the sheet to use (data): ", "data")
+    used_column = input_promts(used_column, "used column letter (A): ", 'A')
+    row_count = input_promts(row_count, "number of used rows (60): ", 60)
 
     raw_data_list = []
     wb = load_workbook(used_workbook)
