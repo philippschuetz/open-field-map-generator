@@ -10,20 +10,24 @@ import getopt
 
 # define variables used in command line options
 border_config = used_column = used_sheet = row_count = ""
+border_color = (106, 153, 85)
 
 # print help message
 def print_help():
     print("Usage: main.py [OPTIONS] [FILE]")
     print("Generate analysation map for open-field-tests from data in .xlsx, .json or .csv file.\n")
-    print("-b, --border     border type, accepted values are 0, 1, 2, 3")
-    print("-s, --sheet      sheet from used .xlsx file")
-    print("-c, --column     column letter used in .xlsx file")
-    print("-r, --rows       number of rows used in .xlsx file")
+    print("global options:")
+    print("-b, --border       border type, accepted values are 0 (inner), 1 (outer), 2 (both), 3 (none)")
+    print("    --border-color specify border color in html format (#RRGGBB)")
+    print("exel specific options:")
+    print("-s, --sheet        sheet from used .xlsx file")
+    print("-c, --column       column letter used in .xlsx file")
+    print("-r, --rows         number of rows used in .xlsx file")
     
 
 # extract command line options
 try:
-    args, opts = getopt.getopt(argv[1:], "hb:s:c:r:", ["help", "border=", "sheet=", "column=", "rows="])
+    args, opts = getopt.getopt(argv[1:], "hb:s:c:r:", ["help", "border=", "border-color=", "sheet=", "column=", "rows="])
 except getopt.GetoptError:
     print_help()
     quit(2)
@@ -51,6 +55,11 @@ for arg, opt in args:
             if opt == "none":
                 border_config = 3
                 continue
+    if arg == "--border-color":
+        # check if color is valid
+        if re.fullmatch(re.compile("#[0-9A-Fa-f]6"), opt):
+            border_color = (int(opt[1,2], 16), int(opt[3,4], 16), int(opt[5,6], 16))
+            
     if arg in ["-s", "--sheet"]:
         used_sheet = opt
     if arg in ["-c", "--column"]:
@@ -113,7 +122,7 @@ else:
 
 # get border design if not set by command line options
 if border_config == "":
-    border_config = input("used border type (inner (default): 0, outer: 1, both: 2, none: 3): ")
+    border_config = int(input("used border type (inner (default): 0, outer: 1, both: 2, none: 3): "))
     if border_config == "":
         border_config = 0
 
@@ -166,35 +175,20 @@ for i in range(0, len(frequency_list_p)):
     i += 1
 
 # draw inner border
-if int(border_config) == 0:
+if border_config == 0 or border_config == 2:
     # delete four middle fields
     d.rectangle(((192, 192), (320, 320)),(0, 0, 0))
     # draw lines
-    d.line([(192, 192), (320, 192)], (106, 153, 85), 8)
-    d.line([(320, 192), (320, 320)], (106, 153, 85), 8)
-    d.line([(320, 320), (192, 320)], (106, 153, 85), 8)
-    d.line([(192, 320), (192, 192)], (106, 153, 85), 8)
+    d.line([(192, 192), (320, 192)], border_color, 8)
+    d.line([(320, 192), (320, 320)], border_color, 8)
+    d.line([(320, 320), (192, 320)], border_color, 8)
+    d.line([(192, 320), (192, 192)], border_color, 8)
 
 # draw outer border
-if int(border_config) == 1:
-    d.line([(0, 0), (512, 0)], (106, 153, 85), 8)
-    d.line([(512, 0), (512, 512)], (106, 153, 85), 8)
-    d.line([(512, 512), (0, 512)], (106, 153, 85), 8)
-    d.line([(0, 512), (0, 0)], (106, 153, 85), 8)
-
-# draw both inner and outer border
-if int(border_config) == 2:
-    # draw outer border
-    d.line([(0, 0), (512, 0)], (106, 153, 85), 8)
-    d.line([(512, 0), (512, 512)], (106, 153, 85), 8)
-    d.line([(512, 512), (0, 512)], (106, 153, 85), 8)
-    d.line([(0, 512), (0, 0)], (106, 153, 85), 8)
-        # delete four middle fields
-    d.rectangle(((192, 192), (320, 320)),(0, 0, 0))
-    # draw inner border
-    d.line([(192, 192), (320, 192)], (106, 153, 85), 8)
-    d.line([(320, 192), (320, 320)], (106, 153, 85), 8)
-    d.line([(320, 320), (192, 320)], (106, 153, 85), 8)
-    d.line([(192, 320), (192, 192)], (106, 153, 85), 8)
+if border_config == 1 or border_config == 2:
+    d.line([(0, 0), (512, 0)], border_color, 8)
+    d.line([(512, 0), (512, 512)], border_color, 8)
+    d.line([(512, 512), (0, 512)], border_color, 8)
+    d.line([(0, 512), (0, 0)], border_color, 8)
 
 out.show()
