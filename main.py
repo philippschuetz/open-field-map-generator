@@ -7,6 +7,7 @@ from collections import Counter
 from PIL import Image, ImageDraw, ImageFont
 from sys import argv
 import getopt
+import re
 
 # define variables used in command line options
 border_config = used_column = used_sheet = row_count = ""
@@ -15,11 +16,11 @@ border_color = (106, 153, 85)
 # print help message
 def print_help():
     print("Usage: main.py [OPTIONS] [FILE]")
-    print("Generate analysation map for open-field-tests from data in .xlsx, .json or .csv file.\n")
-    print("global options:")
+    print("Generate analysation map for open-field-tests from data in .xlsx, .json or .csv file.")
+    print("\nglobal options:")
     print("-b, --border       border type, accepted values are 0 (inner), 1 (outer), 2 (both), 3 (none)")
     print("    --border-color specify border color in html format (#RRGGBB)")
-    print("exel specific options:")
+    print("\nexel specific options:")
     print("-s, --sheet        sheet from used .xlsx file")
     print("-c, --column       column letter used in .xlsx file")
     print("-r, --rows         number of rows used in .xlsx file")
@@ -57,8 +58,9 @@ for arg, opt in args:
                 continue
     if arg == "--border-color":
         # check if color is valid
-        if re.fullmatch(re.compile("#[0-9A-Fa-f]6"), opt):
-            border_color = (int(opt[1,2], 16), int(opt[3,4], 16), int(opt[5,6], 16))
+        if re.fullmatch(re.compile("#[0-9A-Fa-f]{6}"), opt):
+            border_color = (int(opt[1:3], 16), int(opt[3:5], 16), int(opt[5:7], 16))
+            print(border_color)
             
     if arg in ["-s", "--sheet"]:
         used_sheet = opt
@@ -122,9 +124,11 @@ else:
 
 # get border design if not set by command line options
 if border_config == "":
-    border_config = int(input("used border type (inner (default): 0, outer: 1, both: 2, none: 3): "))
+    border_config = input("used border type (inner (default): 0, outer: 1, both: 2, none: 3): ")
     if border_config == "":
         border_config = 0
+    else:
+        border_config = int(border_config)
 
 # calculate frequencies of values in raw_data_list
 frequency_dict = Counter(raw_data_list)
