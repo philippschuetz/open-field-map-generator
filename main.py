@@ -17,7 +17,7 @@ if len(argv) > 1:
     used_workbook = argv[1]
 # else use user input
 else:
-    used_workbook = input("name of the file (data.xlsx): ")
+    used_workbook = input("path to and name of the file (data.xlsx): ")
     if used_workbook == "":
         used_workbook = 'example.csv'
 
