@@ -6,18 +6,54 @@ from attr import field
 from collections import Counter
 from PIL import Image, ImageDraw, ImageFont
 from sys import argv
+import getopt
 
-# print help and exit if help argument was given
-if "-h" in argv or "--help" in argv:
-    print("Usage: main.py [-h] [FILE]")
-    quit()
+# define variables used in command line options
+border_config = ""
 
-# use command line argument 1 as file name if given
-if len(argv) > 1:
-    used_workbook = argv[1]
+# print help message
+def print_help():
+    print("Usage: main.py [OPTIONS] [FILE]")
+    
+
+# extract command line options
+try:
+    args, opts = getopt.getopt(argv[1:], "hb:", ["help", "border="])
+except getopt.GetoptError:
+    print_help()
+    quit(2)
+
+for arg, opt in args:
+    # print help and exit
+    if arg in ["-h", "--help"]:
+        print_help()
+        quit(0)
+    # set border style
+    if arg in ["-b", "--border"]:
+        try:
+            border_config = int(opt)
+            continue
+         except ValueError:
+            if opt == "inner":
+                border_config = 0
+                continue
+            if opt == "outer":
+                border_config = 1
+                continue
+            if opt == "both":
+                border_config = 2
+                continue
+            if opt == "none":
+                border_config = 3
+                continue
+        
+
+# use command line argument as file name if given
+if len(opts) > 0:
+    used_workbook = opts[0]
 # else use user input
 else:
-    used_workbook = input("path to and name of the file (data.xlsx): ")
+    used_workbook = input("path to and name of the file (data.csv): ")
     if used_workbook == "":
         used_workbook = 'example.csv'
 
@@ -61,10 +97,11 @@ else:
         for line in csv_in.readlines():
             raw_data_list.append(int(line))
 
-# get border design
-border_config = input("used border type (inner (default): 0, outer: 1, both: 2, none: 3): ")
-if border_config == "":
-    border_config = 0
+# get border design if not set by command line options
+if border_config == ""
+    border_config = input("used border type (inner (default): 0, outer: 1, both: 2, none: 3): ")
+    if border_config == "":
+        border_config = 0
 
 # calculate frequencies of values in raw_data_list
 frequency_dict = Counter(raw_data_list)
