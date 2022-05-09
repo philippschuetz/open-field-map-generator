@@ -10,7 +10,8 @@ import getopt
 import re
 
 # define variables used in command line options
-border_config = used_column = used_sheet = row_count = ""
+border_config = used_sheet = row_count = ""
+used_column_list = []
 border_color = (106, 153, 85)
 
 # print help message
@@ -65,7 +66,7 @@ for arg, opt in args:
     if arg in ["-s", "--sheet"]:
         used_sheet = opt
     if arg in ["-c", "--column"]:
-        used_column = opt
+        used_column_list = opt.split(",")
     if arg in ["-r", "--rows"]:
         row_count = opt
         
@@ -91,7 +92,7 @@ if used_workbook.endswith(".xlsx"):
         return variable
 
     used_sheet = input_promts(used_sheet, "name of the sheet to use (data): ", "data")
-    used_column = input_promts(used_column, "used column letter (A): ", 'A')
+    used_column = input_promts(used_column_list, "used column letter(s) (A): ", 'A')
     row_count = input_promts(row_count, "number of used rows (60): ", 60)
 
     raw_data_list = []
@@ -101,6 +102,18 @@ if used_workbook.endswith(".xlsx"):
     for i in range(1, int(row_count)):
         cell = str(used_column) + str(i)
         raw_data_list.append(sheet[cell].value)
+
+    for used_column in used_column_list:
+        for i in range(1, int(row_count)):
+            cell = str(used_column) + str(i)
+            raw_data_list.append(sheet[cell].value)
+
+    # remove strings
+    for i in raw_data_list:
+        try:
+            i / 2
+        except TypeError:
+            raw_data_list.remove(i)
 
 # parsing json file
 elif used_workbook.endswith(".json"):
