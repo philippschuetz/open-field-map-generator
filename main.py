@@ -99,12 +99,8 @@ if used_workbook.endswith(".xlsx"):
     wb = load_workbook(used_workbook)
     sheet = wb[used_sheet]
 
-    for i in range(1, int(row_count)):
-        cell = str(used_column) + str(i)
-        raw_data_list.append(sheet[cell].value)
-
     for used_column in used_column_list:
-        for i in range(1, int(row_count)):
+        for i in range(1, int(row_count)+1):
             cell = str(used_column) + str(i)
             raw_data_list.append(sheet[cell].value)
 
