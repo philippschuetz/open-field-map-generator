@@ -19,8 +19,8 @@ def print_help():
     print("Usage: main.py [OPTIONS] [FILE]")
     print("Generate analysation map for open-field-tests from data in .xlsx, .json or .csv file.")
     print("\nglobal options:")
-    print("-b, --border       border type, accepted values are 0 (inner), 1 (outer), 2 (both), 3 (none)")
-    print("    --border-color specify border color in html format (#RRGGBB)")
+    print("--border       border type, accepted values are 0 (inner), 1 (outer), 2 (both), 3 (none)")
+    print("--border-color specify border color in html format (#RRGGBB)")
     print("\nexel specific options:")
     print("-s, --sheet        sheet from used .xlsx file")
     print("-c, --column       column letter used in .xlsx file")
@@ -30,7 +30,7 @@ def print_help():
 # extract command line options
 try:
     args, opts = getopt.getopt(argv[1:], "hb:s:c:r:", ["help", "border=", "border-color=", "sheet=", "column=", "rows="])
-except getopt.GetoptError:
+except getopt.GetoptError as e:
     print_help()
     quit(2)
 
@@ -40,7 +40,7 @@ for arg, opt in args:
         print_help()
         quit(0)
     # set border style
-    if arg in ["-b", "--border"]:
+    if arg in ["--border"]:
         try:
             border_config = int(opt)
             continue
@@ -61,7 +61,6 @@ for arg, opt in args:
         # check if color is valid
         if re.fullmatch(re.compile("#[0-9A-Fa-f]{6}"), opt):
             border_color = (int(opt[1:3], 16), int(opt[3:5], 16), int(opt[5:7], 16))
-            print(border_color)
             
     if arg in ["-s", "--sheet"]:
         used_sheet = opt
